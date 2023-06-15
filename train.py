@@ -372,7 +372,7 @@ if __name__ == "__main__":
     print(f"data is from {data_args.dataset_name}")
     
     wandb.init(
-        project="nlp07_mrc",
+        project=model_args.project_name,
         name=model_args.wandb_name
         + "_"
         + datetime.datetime.now(timezone("Asia/Seoul")).strftime("%m/%d %H:%M"),

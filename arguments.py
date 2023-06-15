@@ -7,6 +7,9 @@ class ModelArguments:
     """
     Arguments pertaining to which model/config/tokenizer we are going to fine-tune from.
     """
+    project_name: str = field(
+        default="nlp07_mrc", metadata={"help": "Wandb project name"}
+    )
     wandb_name: str = field(
         default="", metadata={"help": "Wandb run name. Format should be: \{num\}_\{run-name\}"}
     )
