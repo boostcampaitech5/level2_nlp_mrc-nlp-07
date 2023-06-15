@@ -28,11 +28,13 @@ python inference.py --output_dir ${OUTPUT_PATH} \
                     --retriever ${RETRIEVER} \
                     --top_k_retrieval 10
 
+# --do_eval --dataset_name ../data/train_dataset/
+
 ######## TrainingArguments ######
 # --fp16
 # --*_strategy ["no", "steps", "epoch"]
 # --lr_scheduler_type ["linear", ""]
-# --report_to ["all", "wandb", "none"] -> wandb 아닌 걸로 바꾸면 오류 발생 가능성 높음(확인 안 됨)
+# --report_to ["all", "wandb", "none"] -> {--do_train, --do_eval} 일 때 wandb 아닌 걸로 바꾸면 오류 발생 가능성 높음(확인 안 됨)
 
 ######## DataTrainingArguments #####
 # --max_seq_length 384
