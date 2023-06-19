@@ -1,11 +1,18 @@
+# reader train, odqa inference 공통 arguments
 MODEL_PATH="./models/base"
 OUTPUT_PATH="./outputs/base"
 WANDB_NAME="0_base"
 RETRIEVER="tfidf" # ["tfidf", "dpr", "bm25plus"]
+CONTEXT_PATH="wikipedia_documents.json"
+TRAIN_DATASET="../data/train_dataset"
+TEST_DATASET="../data/test_dataset"
 
+# reader 학습
 python train.py --output_dir ${MODEL_PATH} \
                 --wandb_name ${WANDB_NAME} \
                 --do_train --do_eval \
+                --dataset_name ${TRAIN_DATASET} \
+                --context_path ${CONTEXT_PATH} \
                 --model_name_or_path "klue/bert-base" \
                 --save_strategy steps \
                 --save_steps 500 \
@@ -22,13 +29,15 @@ python train.py --output_dir ${MODEL_PATH} \
                 --warmup_ratio 0.0 \
                 --retriever ${RETRIEVER} \
 
+# ODQA inference
 python inference.py --output_dir ${OUTPUT_PATH} \
-                    --do_predict --dataset_name ../data/test_dataset/ \
+                    --do_predict --dataset_name ${TEST_DATASET} \
+                    --context_path ${CONTEXT_PATH} \
                     --model_name_or_path ${MODEL_PATH} \
                     --retriever ${RETRIEVER} \
                     --top_k_retrieval 10
 
-# --do_eval --dataset_name ../data/train_dataset/
+# --do_eval --dataset_name ${TRAIN_DATASET}
 
 ######## TrainingArguments ######
 # --fp16
