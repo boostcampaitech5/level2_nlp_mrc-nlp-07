@@ -371,10 +371,16 @@ if __name__ == "__main__":
     print(f"model is from {model_args.model_name_or_path}")
     print(f"data is from {data_args.dataset_name}")
     
-    wandb.init(
-        project=model_args.project_name,
-        name=model_args.wandb_name
-        + "_"
-        + datetime.datetime.now(timezone("Asia/Seoul")).strftime("%m/%d %H:%M"),
-    )
+    print(model_args)
+    print(data_args)
+    print(training_args)
+    
+    if "wandb" in training_args.report_to or "all" in training_args.report_to:
+        wandb.init(
+            project=model_args.project_name,
+            name=model_args.wandb_name
+            + "_"
+            + datetime.datetime.now(timezone("Asia/Seoul")).strftime("%m/%d %H:%M"),
+        )
+    
     main(model_args, data_args, training_args)

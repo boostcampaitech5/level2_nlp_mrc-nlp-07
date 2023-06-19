@@ -169,7 +169,7 @@ class BM25PlusRetriever:
                 상위 몇 개의 Passage를 반환할지 정합니다.
         """
 
-        tokenized_query = self.tokenizer(query, truncation=True)["input_ids"][1:-1]
+        tokenized_query = self.tokenizer(query)["input_ids"][1:-1]
 
         scores = [(val, idx) for idx, val in enumerate(self.bm25plus.get_scores(tokenized_query))]
         scores.sort(reverse=True)
@@ -182,20 +182,12 @@ class BM25PlusRetriever:
 
       
 if __name__ == "__main__":
-
-    wandb_name = "bm25plus-noTrunc"
-
-    wandb.init(
-        project="nlp07_mrc_retrieval_score",
-        name=wandb_name
-        + "_"
-        + datetime.datetime.now(timezone("Asia/Seoul")).strftime("%m/%d %H:%M"),
-    )
-
-
     import argparse
 
     parser = argparse.ArgumentParser(description="")
+    parser.add_argument(
+        "--wandb_name", default="bm25plus", type=str, help="Name of wandb run"
+    )
     parser.add_argument(
         "--dataset_name", default="../data/train_dataset", type=str, help=""
     )
@@ -212,6 +204,16 @@ if __name__ == "__main__":
     parser.add_argument("--use_faiss", default=False, type=bool, help="")
 
     args = parser.parse_args()
+    print(args)
+    
+    wandb_name = args.wandb_name
+
+    wandb.init(
+        project="nlp07_mrc_retrieval_score",
+        name=wandb_name
+        + "_"
+        + datetime.datetime.now(timezone("Asia/Seoul")).strftime("%m/%d %H:%M"),
+    )
 
     # concat train + valid dataset
     org_dataset = load_from_disk(args.dataset_name)
